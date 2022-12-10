@@ -1,0 +1,6 @@
+{ 
+    "verbose": true,
+    "watch": ["/src/**"],
+    "exec": "node src/entrypoints/service.js" ,
+    "ext": "js, json"
+}
