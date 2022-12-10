@@ -1,15 +1,18 @@
 import express from 'express'
+import cors from 'cors';
 import { httpVerbs } from '../modules/http.js'
 import { ExpenseRepository } from '../components/expense/infrastructure/expense-repository.js' 
 import { routes as expenseRoutes } from '../components/expense/interface/index.js'
 
 const buildRoute = ({app, route, deps}) => {
     const action = async (req, res) => {
-        console.log("action")
         const { params: routeParams } = req
-        const obj = await route.action({routeParams, ...deps})
-        console.log('dsdsd', obj)
-        return res.json(obj);
+        try {
+            const obj = await route.action({routeParams, ...deps})
+            return res.json({data: obj, status: 200});
+        } catch (err) {
+            return res.json({data: [err], status: 500});
+        }
     }; 
     console.log("route.verb", route)
     switch (route.verb) {
@@ -36,16 +39,19 @@ const buildRoute = ({app, route, deps}) => {
         ...expenseRoutes
     ]
 
+    
+    app.use(cors({
+        origin: 'http://127.0.0.1:5173'
+    }));
+
     routes.forEach(route => {
         buildRoute({app, route, deps})
     });
 
-    app.get('/', (req, res) => {
-        res.send('Hello World!')
-    })
 
     app.listen(port, () => {
         console.log(`Listening on port ${port}`)
+        
         app._router.stack.forEach(function(r){
             if (r.route && r.route.path){
                 console.log(r.route.path)
