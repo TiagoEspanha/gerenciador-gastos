@@ -5,4 +5,12 @@ export class ExpenseRepository {
     async getByUser(userId) {
 
     }
+
+    async create(expense) {
+
+    }
+
+    async getByMonth(userId, month) {
+        
+    }
 } 

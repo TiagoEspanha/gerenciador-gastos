@@ -6,15 +6,15 @@ import { routes as expenseRoutes } from '../components/expense/interface/index.j
 
 const buildRoute = ({app, route, deps}) => {
     const action = async (req, res) => {
-        const { params: routeParams } = req
+        const { params: routeParams, body } = req
         try {
-            const obj = await route.action({routeParams, ...deps})
+            const obj = await route.action({routeParams, body, ...deps})
             return res.json({data: obj, status: 200});
         } catch (err) {
             return res.json({data: [err], status: 500});
         }
     }; 
-    console.log("route.verb", route)
+
     switch (route.verb) {
         case httpVerbs.get:
             app.get(route.path, action)        
@@ -39,7 +39,8 @@ const buildRoute = ({app, route, deps}) => {
         ...expenseRoutes
     ]
 
-    
+    app.use(express.json())
+    app.use(express.urlencoded({ extended: true }))
     app.use(cors({
         origin: 'http://127.0.0.1:5173'
     }));
