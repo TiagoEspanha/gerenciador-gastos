@@ -3,6 +3,7 @@ import cors from 'cors';
 import { httpVerbs } from '../modules/http.js'
 import { ExpenseRepository } from '../components/expense/infrastructure/expense-repository.js' 
 import { routes as expenseRoutes } from '../components/expense/interface/index.js'
+import { Sequelize } from 'sequelize';
 
 const buildRoute = ({app, route, deps}) => {
     const action = async (req, res) => {
@@ -26,10 +27,27 @@ const buildRoute = ({app, route, deps}) => {
     }
 } 
 
+const buildDatabase = () => {
+    const sequelize = new Sequelize('gerenciador-gastos', 'postgres', 'postgres', {
+        host: "localhost",
+        port: 5432,
+        dialect: 'postgres',
+    });
+
+    return sequelize;
+}
+
 
 (async () => {
     const app = express()
     const port = 3000
+    const db = buildDatabase();
+    try {
+        await db.authenticate();
+        console.log('Connection has been established successfully.');
+    } catch (error) {
+        console.error('Unable to connect to the database:', error);
+    }
     const expenseRepo = new ExpenseRepository();
 
     const deps = {
