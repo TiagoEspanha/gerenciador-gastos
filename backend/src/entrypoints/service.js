@@ -1,7 +1,7 @@
 import express from 'express'
 import cors from 'cors';
 import { httpVerbs } from '../modules/http.js'
-import { ExpenseRepository } from '../components/expense/infrastructure/expense-repository.js' 
+import { ExpenseRepository } from '../components/expense/infrastructure/repository.js' 
 import { routes as expenseRoutes } from '../components/expense/interface/index.js'
 import { Sequelize } from 'sequelize';
 

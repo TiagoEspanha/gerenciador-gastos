@@ -12,4 +12,10 @@ export class Expense {
         this.tags = tags;
         this.date = date;
     }
+
+    
 }
+
+export const buildFromModel = (model) => {
+    return new Expense({...model})
+} 
