@@ -1,17 +1,19 @@
-import { Expense } from '../../../../models/expense.js'
+
 import { buildFromModel } from '../domain/expense.js'
 
+const defaultUserId = 1
 export class ExpenseRepository {
-    constructor() {
+    constructor({expenseModel}) {
+        this.model =  expenseModel;
     }
 
-    async create({ amount,description,category,tags,date }) {
-        const modelData = await Expense.create({ amount,description,category,tags,date })
-        return buildFromModel(expense);
+    async create({ amount, description, category, tags, date }) {
+        const modelData = await this.model.create({ amount, description, categoryId: category, tags, date, userId: defaultUserId })
+        return buildFromModel(modelData);
     }
 
     async getByUser(userId) {
-        const models = Expense.findAll({
+        const models = this.model.findAll({
             where: {
                 userId: userId,
             },
@@ -21,7 +23,7 @@ export class ExpenseRepository {
     }
 
     async getByMonthAndYear({userId, month, year}) {
-        const models = Expense.findAll({
+        const models = this.model.findAll({
             where: {
                 userId: userId,
                 [Op.and]: [

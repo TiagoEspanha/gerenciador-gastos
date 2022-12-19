@@ -1,4 +1,5 @@
-import { route as getRoute} from './get-by-user.js'
+import { route as getByUserRoute} from './get-by-user.js'
+import { route as saveRoute} from './create.js'
 import { buildPathWithDomain } from '../../../modules/http.js'
 
 const domain = 'expense';
@@ -6,6 +7,7 @@ const domain = 'expense';
 
 
 export const routes = [
-    buildPathWithDomain(getRoute, domain),
+    buildPathWithDomain(getByUserRoute, domain),
+    buildPathWithDomain(saveRoute, domain),
 ]
 

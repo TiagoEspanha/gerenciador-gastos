@@ -1,6 +1,8 @@
 'use strict';
 import { Model } from 'sequelize';
-module.exports = (sequelize, DataTypes) => {
+
+
+export default (sequelize, DataTypes) => {
   class Expense extends Model {
     /**
      * Helper method for defining associations.
@@ -11,15 +13,19 @@ module.exports = (sequelize, DataTypes) => {
       // define association here
     }
   }
+  
+  
   Expense.init({
     amount: DataTypes.INTEGER,
     description: DataTypes.STRING,
-    category: DataTypes.STRING,
+    categoryId: DataTypes.STRING,
     tags: DataTypes.STRING,
-    date: DataTypes.DATE
+    date: DataTypes.DATE,
+    userId: DataTypes.INTEGER,
   }, {
     sequelize,
     modelName: 'Expense',
+    tableName: 'expenses'
   });
   return Expense;
 };

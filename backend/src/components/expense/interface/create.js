@@ -3,7 +3,7 @@ import { Expense } from '../domain/expense.js'
 
 
 export const route = {
-    path: ``,
+    path: '',
     verb: httpVerbs.post,  
     action: async ({body, expenseRepository}) => {
         const { amount, description, category, tags } = body;

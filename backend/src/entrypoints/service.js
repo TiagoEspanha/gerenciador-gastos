@@ -3,7 +3,8 @@ import cors from 'cors';
 import { httpVerbs } from '../modules/http.js'
 import { ExpenseRepository } from '../components/expense/infrastructure/repository.js' 
 import { routes as expenseRoutes } from '../components/expense/interface/index.js'
-import { Sequelize } from 'sequelize';
+import { Sequelize, DataTypes } from 'sequelize';
+import buildExpenseModel  from '../../models/expense.js';
 
 const buildRoute = ({app, route, deps}) => {
     const action = async (req, res) => {
@@ -12,16 +13,19 @@ const buildRoute = ({app, route, deps}) => {
             const obj = await route.action({routeParams, body, ...deps})
             return res.json({data: obj, status: 200});
         } catch (err) {
+            console.log('ERRO:', err)
             return res.json({data: [err], status: 500});
         }
     }; 
 
     switch (route.verb) {
+       
         case httpVerbs.get:
             app.get(route.path, action)        
             break;
         case httpVerbs.post:
             app.post(route.path, action)    
+            break
         default:
             throw new Error("Invalid http verb")
     }
@@ -40,24 +44,33 @@ const buildDatabase = () => {
         },
     });
 
-    return sequelize;
+    const ExpenseModel = buildExpenseModel(sequelize, DataTypes)
+
+    return {
+        sequelize,
+        ExpenseModel,
+    };
 }
 
 
 (async () => {
     const app = express()
     const port = 3000
-    const db = buildDatabase();
+    const {
+        sequelize: db,
+        ExpenseModel,
+    } = buildDatabase();
+    
     try {
         await db.authenticate();
         console.log('Connection has been established successfully.');
     } catch (error) {
         console.error('Unable to connect to the database:', error);
     }
-    const expenseRepo = new ExpenseRepository();
+    const expenseRepository = new ExpenseRepository({expenseModel: ExpenseModel});
 
     const deps = {
-        expenseRepo,
+        expenseRepository,
     }
     const routes = [
         ...expenseRoutes

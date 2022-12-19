@@ -1,32 +1,29 @@
-import axios from 'axios';
-
+import axios from "axios";
 
 const defaultObserver = {
   setErrors: (errors) => {
-    const isObject = typeof errors === 'object' &&
-    !Array.isArray(errors) &&
-    errors !== null;
+    const isObject =
+      typeof errors === "object" && !Array.isArray(errors) && errors !== null;
 
     if (isObject) {
       alert(Object.values(errors));
     } else {
       alert(errors);
     }
-  }
+  },
 };
-
 
 export const setupAxios = (validationObserver = defaultObserver) => {
   const axiosInstance = axios.create({
     baseURL: "http://localhost:3000/",
     headers: {
-      'Content-Type': 'application/json',
-      'Access-Control-Allow-Origin': '*',
-    }
+      "Content-Type": "application/json",
+      "Access-Control-Allow-Origin": "*",
+    },
   });
 
   const responseHandlerMiddleware = (response) => {
-    console.log('response', response)
+    console.log("response", response);
     return response;
   };
 
@@ -40,7 +37,7 @@ export const setupAxios = (validationObserver = defaultObserver) => {
     }
 
     if (status >= 500) {
-      alert('Erro ao acessar o servidor. Por favor, tente mais tarde');
+      alert("Erro ao acessar o servidor. Por favor, tente mais tarde");
     }
 
     return error.response;
