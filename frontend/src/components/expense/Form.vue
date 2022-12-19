@@ -1,13 +1,13 @@
 <template>
-  <CustomForm ref='validationObserver'>
+  <CustomForm ref="validationObserver">
     <div>
       <h3>Despesas</h3>
     </div>
 
-    <CustomInput 
-      placeholder="Valor" 
-      name="amount" 
-      :onChange="inputChange" 
+    <CustomInput
+      placeholder="Valor"
+      name="amount"
+      :onChange="inputChange"
       type="number"
     />
 
@@ -41,10 +41,7 @@
     />
 
     <div class="new-form-control">
-      <button
-        @click="submit"
-      > Enviar
-      </button>
+      <button @click="submit" data-testid="expense-form-btn">Enviar</button>
     </div>
   </CustomForm>
 </template>
@@ -66,26 +63,29 @@ export default {
         categoryId: "",
         date: "",
         tags: [],
-
       },
       formData: {
         categories: [
           {
             value: 1,
-            text: 'Lazer'
-          }, {
+            text: "Lazer",
+          },
+          {
             value: 2,
-            text: 'Mercado'
-          }, {
+            text: "Mercado",
+          },
+          {
             value: 3,
-            text: 'Farmarcia'
-          }, {
+            text: "Farmarcia",
+          },
+          {
             value: 4,
-            text: 'Casa'
-          }, {
+            text: "Casa",
+          },
+          {
             value: 5,
-            text: 'Outros'
-          }
+            text: "Outros",
+          },
         ],
         tags: [],
       },
@@ -93,13 +93,11 @@ export default {
   },
   async mounted() {
     this.axios = setupAxios();
-
   },
   methods: {
     async submit() {
       const isValid = (await this.$refs.validationObserver.validate()).valid;
-      if (isValid)
-        await this.saveExpense();
+      if (isValid) await this.saveExpense();
     },
     inputChange(value, attribute) {
       this.entity[attribute] = value;
@@ -108,7 +106,13 @@ export default {
       this.entity[attribute] = value;
     },
     async saveExpense() {
-      const resp = await saveExpense(this.axios, {...this.entity});
+      const resp = await saveExpense(this.axios, { ...this.entity });
+      console.log("resp", resp);
+      if (resp.status == 200 || resp.status == 201) {
+        alert("Despesa criada!");
+      } else {
+        alert("Alguma coisa deu errado");
+      }
     },
   },
 };

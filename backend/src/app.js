@@ -7,6 +7,8 @@ import { Sequelize, DataTypes } from 'sequelize';
 import buildExpenseModel  from '../models/expense.js';
 import buildUserModel  from '../models/user.js';
 
+var appSingleton;
+
 const buildRoute = ({app, route, deps}) => {
     const action = async (req, res) => {
         const { params: routeParams, body } = req
@@ -36,6 +38,8 @@ const buildDatabase = (config) => {
         port: config?.port ? config.port : 5432,
     };
 
+    console.log("SSSD", c)
+
     const sequelize = new Sequelize(c.name, 'postgres', 'postgres', {
         host: "localhost",
         port: c.port,
@@ -63,12 +67,16 @@ const buildDatabase = (config) => {
 export const buildApp = async ({
     dbConfig
 }) => {
+    if (appSingleton != undefined) {
+        return appSingleton
+    }
+
     const app = express()
     const port = 3000
     const {
         sequelize: db,
         models,
-    } = buildDatabase({name: "gerenciador-gastos-teste", port: 5433});
+    } = buildDatabase(dbConfig);
     
     try {
         await db.authenticate();
@@ -101,9 +109,11 @@ export const buildApp = async ({
 
     })
 
-    return {
+    appSingleton = {
         app,
         models,
         deps
     };
+
+    return appSingleton;
 }

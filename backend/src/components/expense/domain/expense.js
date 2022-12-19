@@ -47,7 +47,7 @@ export class Expense {
         if(dateData.length != 3){
             throw new Error("Invalid date value")
         }
-        const [day, month, year] = dateData;
+        const [year, month, day] = dateData;
         const parsedDate = Date.parse(year, month, day);
         if (isNaN(parsedDate) || day > 31 || month > 12) {
             throw new Error("Invalid date value") 

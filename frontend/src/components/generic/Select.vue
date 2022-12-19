@@ -23,7 +23,7 @@
 
 <script>
 import { Field, ErrorMessage } from "vee-validate";
-import { getRules } from './rules.js';
+import { getRules } from "./rules.js";
 
 export default {
   components: { Field, ErrorMessage },

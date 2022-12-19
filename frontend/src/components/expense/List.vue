@@ -1,7 +1,7 @@
 <template>
   <div class="greetings">
     <h1 class="green">Despesas</h1>
-    <table>
+    <table data-testid="expense-list">
       <tr>
         <th>Descrição</th>
         <th>Custo</th>
@@ -34,7 +34,6 @@ export default {
   methods: {
     async getExpenses() {
       this.expenses = (await getExpenses(this.axios, 1)).expenses;
-      
     },
   },
 };

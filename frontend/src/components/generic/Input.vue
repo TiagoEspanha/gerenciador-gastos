@@ -1,14 +1,21 @@
 <template>
   <div>
     <label :for="name">{{ placeholder }}</label>
-    <Field :name="name" v-model="value" :type="setType()" :rules="setRules()" :onChange="handleChange"/>
+    <Field
+      :name="name"
+      v-model="value"
+      :type="setType()"
+      :rules="setRules()"
+      :onChange="handleChange"
+      :data-testid="`testid-${name}`"
+    />
     <ErrorMessage :name="name" />
   </div>
 </template>
 
 <script>
 import { Field, ErrorMessage } from "vee-validate";
-import { getRules } from './rules.js';
+import { getRules } from "./rules.js";
 
 export default {
   name: "custom_input",
@@ -31,7 +38,7 @@ export default {
   },
   methods: {
     handleChange(e) {
-      const value = e.target.value;      
+      const value = e.target.value;
       this.onChange(value, this.name);
     },
     setType() {

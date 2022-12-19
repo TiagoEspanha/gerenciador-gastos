@@ -1,5 +1,6 @@
 import { httpVerbs } from './http.js';
 import { buildPathWithDomain } from './http.js';
+import { describe } from '@jest/globals'
 
 const defaultRoute = {
     path: 'carro/lista',
@@ -11,9 +12,9 @@ describe('modules/http', () => {
         it('deve adicionar o dominio na caminho(url)', () => {
             const route = {...defaultRoute}
             const domain = 'test'
-            const expectedValue = `/${domain}/${r.path}`
+            const expectedValue = `/${domain}/${route.path}`
             const res = buildPathWithDomain(route, domain)
-            expect(res.path).to.be.equal(expectedValue)  
+            expect(res.path).toEqual(expectedValue)  
         });
 
         it('deve adicionar string vazia se o atributo path está vazio  ', () => {
@@ -21,7 +22,7 @@ describe('modules/http', () => {
             const domain = 'test'
             const expectedValue = `/${domain}/`
             const res = buildPathWithDomain(route, domain)
-            expect(res.path).to.be.equal(expectedValue)  
+            expect(res.path).toEqual(expectedValue)  
             
             
         });
