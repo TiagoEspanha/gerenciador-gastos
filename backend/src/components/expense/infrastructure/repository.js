@@ -7,17 +7,18 @@ export class ExpenseRepository {
         this.model =  expenseModel;
     }
 
-    async create({ amount, description, categoryId, tags, date }) {
-        const modelData = await this.model.create({ amount, description, categoryId, tags, date, userId: defaultUserId })
+    async create({ amount, description, categoryId, date }) {
+        const modelData = await this.model.create({ amount, description, categoryId, date, userId: defaultUserId })
         return buildFromModel(modelData);
     }
 
     async getByUser(userId) {
         const models = await this.model.findAll({
             where: {
-                userId: defaultUserId,
+                userId: userId,
             },
         });
+
         return models.map(m => buildFromModel(m));
     }
 

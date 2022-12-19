@@ -7,6 +7,7 @@ export const route = {
     action: async ({routeParams, expenseRepository}) => {
         const { userId } = routeParams;
         const expenses = await expenseRepository.getByUser(userId)
+        
         return {
             expenses,
         }
