@@ -2,13 +2,13 @@ export class Expense {
     constructor({
         amount, 
         description,
-        category,
+        categoryId,
         tags,
         date,
     }) {
         this.amount = amount;
         this.description = description;
-        this.category = category;
+        this.categoryId = categoryId;
         this.tags = tags;
         this.date = date;
     }
@@ -17,5 +17,5 @@ export class Expense {
 }
 
 export const buildFromModel = (model) => {
-    return new Expense({...model})
+    return new Expense({...model.dataValues})
 } 

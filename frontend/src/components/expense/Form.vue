@@ -1,5 +1,5 @@
 <template>
-  <CustomForm @submit="submit">
+  <CustomForm ref='validationObserver'>
     <div>
       <h3>Despesas</h3>
     </div>
@@ -19,7 +19,7 @@
 
     <CustomSelect
       placeholder="Categoria"
-      name="category"
+      name="categoryId"
       :options="formData.categories"
       :onChange="selectChange"
     />
@@ -63,7 +63,7 @@ export default {
       entity: {
         amount: 0,
         description: "",
-        category: "",
+        categoryId: "",
         date: "",
         tags: [],
 
@@ -93,10 +93,13 @@ export default {
   },
   async mounted() {
     this.axios = setupAxios();
+
   },
   methods: {
     async submit() {
-      await this.saveExpense();
+      const isValid = (await this.$refs.validationObserver.validate()).valid;
+      if (isValid)
+        await this.saveExpense();
     },
     inputChange(value, attribute) {
       this.entity[attribute] = value;

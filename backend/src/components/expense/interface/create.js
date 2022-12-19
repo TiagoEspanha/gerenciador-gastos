@@ -6,8 +6,8 @@ export const route = {
     path: '',
     verb: httpVerbs.post,  
     action: async ({body, expenseRepository}) => {
-        const { amount, description, category, tags } = body;
-        const expense = new Expense({ amount, description, category, tags })
+        const { amount, description, date, categoryId, tags } = body;
+        const expense = new Expense({ amount, description, categoryId, tags, date })
         await expenseRepository.create(expense);
         
         return {

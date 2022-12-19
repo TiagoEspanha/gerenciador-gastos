@@ -19,7 +19,6 @@ const buildRoute = ({app, route, deps}) => {
     }; 
 
     switch (route.verb) {
-       
         case httpVerbs.get:
             app.get(route.path, action)        
             break;

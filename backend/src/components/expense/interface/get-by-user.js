@@ -6,7 +6,7 @@ export const route = {
     verb: httpVerbs.get,  
     action: async ({routeParams, expenseRepository}) => {
         const { userId } = routeParams;
-        const expenses = []
+        const expenses = await expenseRepository.getByUser(userId)
         return {
             expenses,
         }

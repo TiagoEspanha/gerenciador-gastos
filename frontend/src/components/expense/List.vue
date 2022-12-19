@@ -6,13 +6,13 @@
         <th>Descrição</th>
         <th>Custo</th>
         <th>Categoria</th>
-        <th>Tags</th>
+        <th>Data</th>
       </tr>
       <tr v-for="expense in expenses" :key="expense.id">
         <td>{{ expense.description }}</td>
         <td>{{ expense.amount }}</td>
-        <td>{{ expense.category }}</td>
-        <td>{{ expense.tags }}</td>
+        <td>{{ expense.categoryId }}</td>
+        <td>{{ expense.date }}</td>
       </tr>
     </table>
   </div>
@@ -33,7 +33,8 @@ export default {
   },
   methods: {
     async getExpenses() {
-      this.expenses = await getExpenses(this.axios);
+      this.expenses = (await getExpenses(this.axios, 1)).expenses;
+      
     },
   },
 };

@@ -23,8 +23,7 @@ export const setupAxios = (validationObserver = defaultObserver) => {
   });
 
   const responseHandlerMiddleware = (response) => {
-    console.log("response", response);
-    return response;
+    return response.data.data;
   };
 
   const errorHandlerMiddleware = (error) => {
