@@ -3,9 +3,14 @@ import { buildApp } from '../../../app.js';
 import { describe, beforeAll } from '@jest/globals'
 import { createExpense, truncateExpenseModel, truncateUserModel, createUser } from './internal.js'
 
-
-describe('get-by-user', () => {
+describe('create', () => {
     let app, expenseRepository, models;
+    const defaultExpensePayload = {
+        amount: 100, 
+        description: "despesa x", 
+        date: "30-12-2022", 
+        categoryId: 1, 
+    }
     
     beforeAll(async () => {
         const service = await buildApp({name: "gerenciador-gastos-teste", port: 5433})
@@ -21,41 +26,23 @@ describe('get-by-user', () => {
         await truncateUserModel(UserModel)
         
     });
-    
-    it('Deve devolver todas despesas do usuário', async () => {
-        await createExpense(expenseRepository, {
-            amount: 10000,
-            description: "teste 1",
-            categoryId: "1",
-            date: "12-12-2022"
-        });
 
-        await createExpense(expenseRepository, {
-            amount: 10000,
-            description: "teste 2",
-            categoryId: "2",
-            date: "12-12-2022"
-        });
-
-        
+    it('Deve criar despesa para usuário com id 1', async () => {
         const response = await supertest(app)
-            .get('/expense/user/1')
+            .post('/expense/')
+            .send({...defaultExpensePayload})
             .expect(200);
 
-        expect(response.body.data.expenses.length).toEqual(2);            
+        const userExpenses = await expenseRepository.getByUser(1);
+        expect(userExpenses.length).toEqual(1);       
     });
 
-    it('Deve devolver array vazia quando usuário não possui despesas', async () => {
-        
+    it('Deve criar despesa para usuário com id 1', async () => {
         const response = await supertest(app)
-            .get('/expense/user/2')
-            .expect(200);
-
-        expect(response.body.data.expenses.length).toEqual(0);            
+            .post('/expense/')
+            .send({...defaultExpensePayload, amount: undefined})
+            .expect(400);
     });
 
 })
-
-
-
     

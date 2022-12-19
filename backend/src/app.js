@@ -12,10 +12,9 @@ const buildRoute = ({app, route, deps}) => {
         const { params: routeParams, body } = req
         try {
             const obj = await route.action({routeParams, body, ...deps})
-            return res.json({data: obj, status: 200});
+            return res.json({data: obj});
         } catch (err) {
-            console.log('ERRO:', err)
-            return res.json({data: [err], status: 500});
+            return res.status(err.statusCode ? err.statusCode : 500).json({data: err.message ? err.message : err});
         }
     }; 
 

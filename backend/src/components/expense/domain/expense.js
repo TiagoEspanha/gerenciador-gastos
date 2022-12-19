@@ -22,7 +22,7 @@ export class Expense {
     }
 
     setAmount(amount) {
-        if (amount < 0)
+        if (amount < 0 || amount == undefined) 
             throw new Error("Invalid amount value")
 
         this.amount = amount;
@@ -35,8 +35,6 @@ export class Expense {
     }
 
     setCategoryId(categoryId) {
-        
-        
         const validCategoryIds = [...Object.keys(categoryEnum)]
         if (!validCategoryIds.includes(categoryId.toString()))
             throw new Error("Invalid categoryId value")
